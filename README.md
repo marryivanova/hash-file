@@ -56,6 +56,11 @@ poetry install
 cd docker
 docker-compose up --build
 ```
+<figure>
+  <img src="src/docs_content/docker.png">
+  <figcaption>swagger api docs</figcaption>
+</figure>
+
 or 
 
 ```bash

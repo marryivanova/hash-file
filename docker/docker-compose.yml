@@ -8,14 +8,22 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - APP_HOST=${HOST}
-      - APP_PORT=${PORT}
-      - APP_DEBUG=${DEBUG}
+      - APP_HOST=${HOST:-0.0.0.0}
+      - APP_PORT=${PORT:-8000}
+      - APP_DEBUG=${DEBUG:-False}
       - DB_HOST=db
       - DB_PORT=${DB_PORT}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ../:/app
+    command: >
+      bash -c "if [ $$APP_DEBUG = 'True' ]; then 
+        python main.py; 
+      else 
+        gunicorn --bind 0.0.0.0:8000 --workers 4 main:app; 
+      fi"
     depends_on:
       db:
         condition: service_healthy
